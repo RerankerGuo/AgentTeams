@@ -42,7 +42,13 @@
 #                                      (default: nacos://market.agentteams.io:80/public)
 #   AGENTTEAMS_NACOS_USERNAME              Default Nacos username for nacos:// package imports (optional)
 #   AGENTTEAMS_NACOS_PASSWORD              Default Nacos password for nacos:// package imports (optional)
-#   AGENTTEAMS_CMS_TRACES_ENABLED          Enable agentteams-cms-plugin traces for Manager AND all Workers (default: false)
+#   AGENTTEAMS_CMS_TRACES_ENABLED          Enable openclaw-cms-plugin traces for Manager AND all Workers (default: false)
+#                                         (Plugin is still distributed as `openclaw-cms-plugin` — downloaded by
+#                                          manager/Dockerfile and worker/Dockerfile from OPENCLAW_CMS_PLUGIN_URL
+#                                          and referenced as `CMS_PLUGIN_NAME=openclaw-cms-plugin` in
+#                                          manager/scripts/init/start-manager-agent.sh. The env-var family was
+#                                          intentionally renamed `AGENTTEAMS_CMS_*`; the plugin package name
+#                                          is what the Dockerfiles / start-manager-agent.sh still use.)
 #   AGENTTEAMS_CMS_ENDPOINT                ARMS OTLP endpoint (required if traces enabled)
 #   AGENTTEAMS_CMS_LICENSE_KEY             CMS license key (required if traces enabled)
 #   AGENTTEAMS_CMS_PROJECT                 CMS project name (optional)
