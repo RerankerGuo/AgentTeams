@@ -86,6 +86,30 @@ def test_default_sync_timeout_unchanged():
 
 
 def test_explicit_positive_sync_timeout_unchanged():
-    """Any explicit positive value must be honored as-is."""
+    """Any explicit value at or above the floor must be honored as-is."""
     channel = _make_channel(sync_timeout_ms=15000)
     assert channel.sync_timeout_ms == 15000
+
+
+def test_500ms_sync_timeout_clamped_to_minimum():
+    """500 ms is a positive value *below* the 1 s floor: it is clamped,
+    not passed through — every value below 1000 ms collapses to the
+    floor, positive or not."""
+    channel = _make_channel(sync_timeout_ms=500)
+    assert channel.sync_timeout_ms == MIN_SYNC_TIMEOUT_MS
+    assert channel.sync_timeout_ms == 1000
+
+
+def test_999ms_sync_timeout_clamped_to_minimum():
+    """999 ms is the largest value below the floor and must still be
+    clamped, pinning the exact 1000 ms boundary from below."""
+    channel = _make_channel(sync_timeout_ms=999)
+    assert channel.sync_timeout_ms == MIN_SYNC_TIMEOUT_MS
+    assert channel.sync_timeout_ms == 1000
+
+
+def test_1000ms_sync_timeout_unchanged():
+    """1000 ms sits exactly on the floor and passes through unchanged,
+    pinning the exact 1000 ms boundary from above."""
+    channel = _make_channel(sync_timeout_ms=1000)
+    assert channel.sync_timeout_ms == 1000
